@@ -518,7 +518,8 @@ export default function Vouchers() {
               width: 38mm !important;
               display: flex !important;
               flex-direction: column !important;
-              justify-content: space-between !important;
+              justify-content: flex-start !important;
+              gap: 0.5mm !important;
             }
             
             .voucher-plano {
@@ -529,10 +530,10 @@ export default function Vouchers() {
             
             .voucher-codigo-box {
               background: #f0f0f0 !important;
-              padding: 1mm 2mm !important;
+              padding: 0.8mm 1.5mm !important;
               border-radius: 4px !important;
               text-align: center !important;
-              margin: 0.5mm 0 !important;
+              margin: 0.3mm 0 !important;
             }
             
             .voucher-codigo {
@@ -544,15 +545,16 @@ export default function Vouchers() {
             }
             
             .voucher-specs {
-              font-size: 6.5pt !important;
+              font-size: 5.5pt !important;
               color: #333 !important;
+              white-space: nowrap !important;
             }
             
             .voucher-instrucoes {
-              font-size: 5.5pt !important;
-              line-height: 1.2 !important;
+              font-size: 5.0pt !important;
+              line-height: 1.15 !important;
               color: #555 !important;
-              margin-top: 0.5mm !important;
+              margin-top: 0.3mm !important;
             }
             
             .voucher-qr {
