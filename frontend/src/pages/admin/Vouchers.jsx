@@ -445,14 +445,23 @@ export default function Vouchers() {
             .print-only { display: none !important; }
           }
           @media print {
-            .screen-only { display: none !important; }
-            html, body {
+            /* Ocultar elementos estruturais do painel admin */
+            aside, header, footer, button, select, input, .screen-only {
+              display: none !important;
+            }
+            
+            /* Resetar backgrounds e espaçamentos dos containers pai */
+            html, body, #root, div, main {
               background: white !important;
               color: black !important;
               font-family: sans-serif;
-              margin: 0;
-              padding: 0;
+              margin: 0 !important;
+              padding: 0 !important;
+              width: 100% !important;
+              box-shadow: none !important;
+              overflow: visible !important;
             }
+            
             .print-only {
               display: block !important;
             }
