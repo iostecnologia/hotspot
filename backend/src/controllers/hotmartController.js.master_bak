@@ -1,0 +1,146 @@
+const axios = require('axios');
+
+const HOTMART_AUTH_URL = 'https://api-sec-vlc.hotmart.com/security/oauth/token';
+const HOTMART_CLUB_API = 'https://developers.hotmart.com/club/api/v1';
+const HOTMART_PAYMENTS_API = 'https://developers.hotmart.com/payments/api/v1';
+
+// Cache do token OAuth2 (expira em ~5 min para seguranca)
+let cachedToken = null;
+let tokenExpiresAt = 0;
+
+async function obterToken() {
+  const clientId = process.env.HOTMART_CLIENT_ID;
+  const clientSecret = process.env.HOTMART_CLIENT_SECRET;
+
+  if (!clientId || !clientSecret) {
+    throw new Error('HOTMART_CLIENT_ID ou HOTMART_CLIENT_SECRET nao configurados');
+  }
+
+  // Usar token em cache se ainda valido
+  if (cachedToken && Date.now() < tokenExpiresAt) {
+    return cachedToken;
+  }
+
+  const credentials = Buffer.from(`${clientId}:${clientSecret}`).toString('base64');
+
+  const response = await axios.post(HOTMART_AUTH_URL, 'grant_type=client_credentials', {
+    headers: {
+      'Authorization': `Basic ${credentials}`,
+      'Content-Type': 'application/x-www-form-urlencoded',
+    },
+    timeout: 15000,
+  });
+
+  if (typeof response.data === 'string') {
+    throw new Error('Hotmart API bloqueada (CloudFront). Tente novamente em alguns minutos.');
+  }
+
+  cachedToken = response.data.access_token;
+  // Cache por 4 minutos (token dura 5 min normalmente)
+  tokenExpiresAt = Date.now() + 4 * 60 * 1000;
+
+  return cachedToken;
+}
+
+const validarAssinatura = async (email) => {
+  const subdomain = process.env.HOTMART_SUBDOMAIN;
+  const productId = process.env.HOTMART_PRODUCT_ID;
+
+  if (!subdomain) {
+    throw new Error('HOTMART_SUBDOMAIN nao configurado');
+  }
+
+  try {
+    const token = await obterToken();
+
+    const authHeaders = {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json',
+    };
+
+    // 1. Club API - verificar se usuario tem acesso na area de membros
+    try {
+      const response = await axios.get(`${HOTMART_CLUB_API}/users`, {
+        headers: authHeaders,
+        params: {
+          subdomain,
+          email,
+        },
+        timeout: 15000,
+      });
+
+      const users = response.data?.items || response.data?.users || [];
+      if (Array.isArray(users) && users.length > 0) {
+        // Usuario encontrado na area de membros = acesso valido
+        return { valid: true };
+      }
+
+      // Resposta vazia = sem acesso
+    } catch (clubErr) {
+      console.warn('Aviso ao consultar Club API:', clubErr.response?.status, clubErr.message);
+      // Se Club API falhar, tenta fallbacks
+    }
+
+    // 2. Fallback: verificar assinaturas via Payments API
+    if (productId) {
+      try {
+        const response = await axios.get(`${HOTMART_PAYMENTS_API}/subscriptions`, {
+          headers: authHeaders,
+          params: {
+            subscriber_email: email,
+            product_id: productId,
+          },
+          timeout: 15000,
+        });
+
+        const subscriptions = response.data?.items || [];
+        const ativa = subscriptions.some(sub =>
+          sub.status === 'ACTIVE' ||
+          sub.status === 'STARTED' ||
+          sub.status === 'RECOVERED'
+        );
+        if (ativa) return { valid: true };
+      } catch (subErr) {
+        if (subErr.response?.status !== 404) {
+          console.warn('Aviso ao consultar subscriptions:', subErr.message);
+        }
+      }
+
+      // 3. Fallback: verificar compra unica (sales/history)
+      try {
+        const purchaseRes = await axios.get(`${HOTMART_PAYMENTS_API}/sales/history`, {
+          headers: authHeaders,
+          params: {
+            buyer_email: email,
+            product_id: productId,
+          },
+          timeout: 15000,
+        });
+
+        const purchases = purchaseRes.data?.items || [];
+        const compraAprovada = purchases.some(p =>
+          p.purchase?.status === 'APPROVED' ||
+          p.purchase?.status === 'COMPLETE'
+        );
+        if (compraAprovada) return { valid: true };
+      } catch (purchErr) {
+        if (purchErr.response?.status !== 404) {
+          console.warn('Aviso ao consultar sales/history:', purchErr.message);
+        }
+      }
+    }
+
+    return { valid: false, reason: 'Assinatura inativa ou nao encontrada para este email' };
+  } catch (err) {
+    console.error('Erro ao validar Hotmart:', err.message);
+    if (err.response?.status === 401) {
+      // Limpar cache do token
+      cachedToken = null;
+      tokenExpiresAt = 0;
+      throw new Error('Credenciais Hotmart invalidas');
+    }
+    throw new Error('Erro ao consultar API Hotmart: ' + err.message);
+  }
+};
+
+module.exports = { validarAssinatura };

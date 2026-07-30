@@ -1,0 +1,16 @@
+services:
+  wg-easy:
+    network_mode: "host"
+    environment:
+      - WG_HOST=187.127.43.89
+      - PASSWORD_HASH=$$2b$$12$$yvZu6Dh4h.U1bj4F3X8HY.de58zjmrOnMMQIBzcaqkxPbAWFOirLW
+      - PORT=51821
+      - WG_PORT=51820
+    image: ghcr.io/wg-easy/wg-easy
+    container_name: wg-easy
+    restart: unless-stopped
+    volumes:
+      - ./.wg-easy:/etc/wireguard
+    cap_add:
+      - NET_ADMIN
+      - SYS_MODULE
