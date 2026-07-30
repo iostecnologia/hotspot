@@ -474,11 +474,11 @@ export default function Vouchers() {
               page-break-after: always;
             }
             
-            /* Usar Grid CSS para alinhar perfeitamente 3x8 por folha A4 */
+            /* Layout Horizontal: 2 colunas x 9 linhas = 18 por folha A4 */
             .vouchers-grid {
               display: grid !important;
-              grid-template-columns: repeat(3, 60mm) !important;
-              gap: 3mm !important;
+              grid-template-columns: repeat(2, 90mm) !important;
+              gap: 4mm 5mm !important;
               width: 190mm !important;
               margin: 0 auto !important;
               padding-top: 10mm !important;
@@ -486,10 +486,10 @@ export default function Vouchers() {
             }
             
             .voucher-ticket {
-              width: 60mm !important;
-              height: 34mm !important;
+              width: 90mm !important;
+              height: 25mm !important;
               border: 1px dashed #666 !important;
-              padding: 1.5mm 2.5mm !important;
+              padding: 1.5mm 3mm !important;
               box-sizing: border-box !important;
               background: white !important;
               color: black !important;
@@ -511,11 +511,11 @@ export default function Vouchers() {
             .voucher-body {
               display: flex !important;
               justify-content: space-between !important;
-              height: 22mm !important;
+              height: 17mm !important;
             }
             
             .voucher-info {
-              width: 38mm !important;
+              width: 64mm !important;
               display: flex !important;
               flex-direction: column !important;
               justify-content: flex-start !important;
@@ -530,31 +530,31 @@ export default function Vouchers() {
             
             .voucher-codigo-box {
               background: #f0f0f0 !important;
-              padding: 0.8mm 1.5mm !important;
+              padding: 0.6mm 1.5mm !important;
               border-radius: 4px !important;
               text-align: center !important;
-              margin: 0.3mm 0 !important;
+              margin: 0.2mm 0 !important;
+              font-size: 7pt !important;
             }
             
             .voucher-codigo {
               font-family: monospace !important;
-              font-size: 11pt !important;
+              font-size: 9.5pt !important;
               font-weight: bold !important;
               letter-spacing: 1px !important;
               color: black !important;
             }
             
             .voucher-specs {
-              font-size: 5.5pt !important;
+              font-size: 6.5pt !important;
               color: #333 !important;
-              white-space: nowrap !important;
             }
             
             .voucher-instrucoes {
-              font-size: 5.0pt !important;
-              line-height: 1.15 !important;
+              font-size: 5.5pt !important;
+              line-height: 1.2 !important;
               color: #555 !important;
-              margin-top: 0.3mm !important;
+              margin-top: 0.2mm !important;
             }
             
             .voucher-qr {
@@ -566,13 +566,13 @@ export default function Vouchers() {
             }
             
             .voucher-qr img {
-              width: 15mm !important;
-              height: 15mm !important;
+              width: 13mm !important;
+              height: 13mm !important;
               background: white !important;
             }
             
             .voucher-qr-txt {
-              font-size: 4.5pt !important;
+              font-size: 4pt !important;
               color: #666 !important;
               text-transform: uppercase !important;
               margin-top: 0.5mm !important;
@@ -581,10 +581,10 @@ export default function Vouchers() {
           }
         `}</style>
         
-        {/* Fazer agrupamento por páginas A4 (máximo 24 por página) */}
+        {/* Fazer agrupamento por páginas A4 (máximo 18 por página no layout 2x9) */}
         {(() => {
           const pages = [];
-          const itemsPerPage = 24;
+          const itemsPerPage = 18;
           for (let i = 0; i < printVouchers.length; i += itemsPerPage) {
             pages.push(printVouchers.slice(i, i + itemsPerPage));
           }
@@ -596,12 +596,14 @@ export default function Vouchers() {
                   <div className="voucher-title">Wi-Fi Acesso Rápido</div>
                   <div className="voucher-body">
                     <div className="voucher-info">
-                      <div className="voucher-plano">{v.plano_nome}</div>
-                      <div className="voucher-codigo-box">
-                        <span className="voucher-codigo">{v.codigo}</span>
+                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                        <div className="voucher-plano">{v.plano_nome}</div>
+                        <div className="voucher-specs">
+                          Duração: {v.duracao_minutos} min | Up: {v.velocidade_up}M | Down: {v.velocidade_down}M
+                        </div>
                       </div>
-                      <div className="voucher-specs">
-                        Duração: {v.duracao_minutos} min | Up: {v.velocidade_up}M | Down: {v.velocidade_down}M
+                      <div className="voucher-codigo-box">
+                        Código de Acesso: <span className="voucher-codigo">{v.codigo}</span>
                       </div>
                       <div className="voucher-instrucoes">
                         Conecte no Wi-Fi, clique em 'Entrar com Voucher' e digite o código ou escaneie o QR Code.
