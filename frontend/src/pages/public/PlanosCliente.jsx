@@ -200,6 +200,18 @@ export default function PlanosCliente() {
         </div>
       )}
 
+      <div className="mt-8 text-center animate-fade-in">
+        <button
+          onClick={() => {
+            const qs = new URLSearchParams(window.location.search).toString();
+            window.location.href = `/voucher/login?${qs}`;
+          }}
+          className={`text-sm font-semibold hover:opacity-80 transition-colors py-2 cursor-pointer ${cfg.cor_fundo_1 ? 'text-white underline decoration-dotted' : 'text-blue-600'}`}
+        >
+          🎫 Possui um Voucher de Acesso? Clique aqui para conectar
+        </button>
+      </div>
+
       {/* Footer */}
       <div className={`mt-12 text-center text-sm ${cfg.cor_fundo_1 ? 'text-gray-400' : 'text-gray-500'}`}>
         <p>💳 {cfg.texto_rodape || 'Pagamento 100% seguro • 🔒 Conexão protegida'}</p>

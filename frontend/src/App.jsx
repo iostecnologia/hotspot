@@ -22,6 +22,7 @@ import GruposPermissao from "./pages/admin/GruposPermissao";
 import WhatsApp from "./pages/admin/WhatsApp";
 import Campanhas from "./pages/admin/Campanhas";
 import CampanhaEditor from "./pages/admin/CampanhaEditor";
+import Vouchers from "./pages/admin/Vouchers";
 import Empresas from "./pages/super/Empresas";
 import SuperDashboard from "./pages/super/SuperDashboard";
 import Backups from "./pages/super/Backups";
@@ -38,6 +39,7 @@ import CadastroCliente from "./pages/public/CadastroCliente";
 import Registro from "./pages/public/Registro";
 import CampanhaPlayer from "./pages/public/CampanhaPlayer";
 import LoginHotspot from "./pages/public/LoginHotspot";
+import VoucherLogin from "./pages/public/VoucherLogin";
 
 // Componente de proteção
 const RotaPrivada = ({ children }) => {
@@ -68,6 +70,7 @@ function App() {
       <Route path="/lead" element={<CadastroLead />} />
       <Route path="/lead-passivo" element={<CadastroLeadPassivo />} />
       <Route path="/login-hotspot" element={<LoginHotspot />} />
+      <Route path="/voucher/login" element={<VoucherLogin />} />
       <Route path="/registro" element={<Registro />} />
       <Route path="/campanha/:portalId" element={<CampanhaPlayer />} />
 
@@ -94,6 +97,7 @@ function App() {
       <Route path="/admin/:empresaSlug/usuarios" element={<RotaPrivada><Usuarios /></RotaPrivada>} />
       <Route path="/admin/:empresaSlug/grupos-permissao" element={<RotaPrivada><GruposPermissao /></RotaPrivada>} />
       <Route path="/admin/:empresaSlug/whatsapp" element={<RotaPrivada><WhatsApp /></RotaPrivada>} />
+      <Route path="/admin/:empresaSlug/vouchers" element={<RotaPrivada><Vouchers /></RotaPrivada>} />
       <Route path="/admin/:empresaSlug/campanhas" element={<RotaPrivada><Campanhas /></RotaPrivada>} />
       <Route path="/admin/:empresaSlug/campanhas/:id" element={<RotaPrivada><CampanhaEditor /></RotaPrivada>} />
 

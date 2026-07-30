@@ -203,9 +203,19 @@ export default function CadastroCliente() {
             </button>
           </form>
 
-          <div className="mt-6 pt-6 border-t border-gray-200">
-            <p className="text-xs text-gray-500 text-center leading-relaxed">
-              🔒 Seus dados estão seguros e serão utilizados apenas para processar seu pagamento.
+          <div className="mt-6 pt-6 border-t border-gray-200 text-center">
+            <button
+              type="button"
+              onClick={() => {
+                const qs = new URLSearchParams(window.location.search).toString();
+                window.location.href = `/voucher/login?${qs}`;
+              }}
+              className="text-sm font-semibold text-blue-600 hover:text-blue-800 transition-colors cursor-pointer block w-full text-center py-2"
+            >
+              🎫 Possui um Voucher de Acesso? Clique aqui para conectar
+            </button>
+            <p className="text-xs text-gray-500 text-center leading-relaxed mt-4">
+              🔒 Seus dados estão seguros e serão utilizados apenas para autorizar o acesso.
             </p>
           </div>
           </>

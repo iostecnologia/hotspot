@@ -133,6 +133,16 @@ export default function AdminLayout({ children }) {
       )
     },
     {
+      key: "vouchers",
+      title: "Vouchers",
+      path: `${basePath}/vouchers`,
+      icon: (
+        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 8.25c0-1.24-1.01-2.25-2.25-2.25H5.25C4.01 6 3 7.01 3 8.25c0 .41.34.75.75.75.83 0 1.5.67 1.5 1.5s-.67 1.5-1.5 1.5c-.41 0-.75.34-.75.75 0 1.24 1.01 2.25 2.25 2.25h13.5c1.24 0 2.25-1.01 2.25-2.25 0-.41-.34-.75-.75-.75-.83 0-1.5-.67-1.5-1.5s.67-1.5 1.5-1.5c.41 0 .75-.34.75-.75z" />
+        </svg>
+      )
+    },
+    {
       key: "pagamentos",
       title: "Pagamentos",
       path: `${basePath}/pagamentos`,
@@ -211,7 +221,7 @@ export default function AdminLayout({ children }) {
   const filteredMenuItems = menuItems.map(item => {
     if (item.children) {
       const filteredChildren = item.children.filter(child => {
-        if (!child.key || child.key === 'dashboard') return true;
+        if (!child.key || child.key === 'dashboard' || child.key === 'vouchers') return true;
         if (isSuperAdmin) return true;
         if (child.key === 'empresas' || child.key === 'grupos-permissao' || child.key === 'logs') return false;
         return hasPermission(child.key, 'ver');
@@ -219,7 +229,7 @@ export default function AdminLayout({ children }) {
       return filteredChildren.length > 0 ? { ...item, children: filteredChildren } : null;
     }
     
-    if (!item.key || item.key === 'dashboard') return item;
+    if (!item.key || item.key === 'dashboard' || item.key === 'vouchers') return item;
     if (isSuperAdmin) return item;
     if (item.key === 'empresas' || item.key === 'grupos-permissao' || item.key === 'logs') return null;
     return hasPermission(item.key, 'ver') ? item : null;

@@ -51,6 +51,7 @@ const loginPortalRoutes = require("./src/routes/loginPortalRoutes");
 const systemBackupRoutes = require("./src/routes/systemBackupRoutes");
 const systemUpdateRoutes = require("./src/routes/systemUpdateRoutes");
 const logsRoutes = require("./src/routes/logsRoutes");
+const voucherRoutes = require("./src/routes/voucherRoutes");
 const db = require("./db");
 
 // Rotas exclusivas do servidor principal (OTA updates) - não existem nos servidores de alunos
@@ -89,9 +90,14 @@ app.post("/api/clientes/cadastro", cadastroCliente);
 // Rota pública para login do portal Wifi/Radius
 app.use("/api/login-portal", loginPortalRoutes);
 
+// Rota pública para login via Voucher (sem auth)
+const { ativarEAutenticarVoucher } = require("./src/controllers/voucherController");
+app.post("/api/public/vouchers/autenticar", ativarEAutenticarVoucher);
+
 // --- Rotas protegidas (auth + tenant + permissão) ---
 const checkPermissao = require('./src/middleware/checkPermissao');
 app.use('/api/planos', auth, tenant, checkPermissao('planos'), planRoutes)
+app.use('/api/vouchers', auth, tenant, checkPermissao('planos'), voucherRoutes);
 app.use("/api/mikrotiks", auth, tenant, checkPermissao('mikrotiks'), mikrotikRoutes);
 app.use("/api/efi", auth, tenant, checkPermissao('configuracoes'), efiRoutes);
 app.use("/api/config-mercadopago", auth, tenant, checkPermissao('configuracoes'), mercadoPagoRoutes);
