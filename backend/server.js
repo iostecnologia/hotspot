@@ -1,7 +1,8 @@
-require('dotenv').config()
+const path = require('path')
+const envFile = process.env.NODE_ENV === 'development' ? '.env.dev' : '.env'
+require('dotenv').config({ path: path.resolve(__dirname, envFile) })
 const express = require('express')
 const cors = require('cors')
-const path = require('path')
 const app = express()
 
 // Prevenir crash do processo por erros não tratados do node-routeros (!empty)

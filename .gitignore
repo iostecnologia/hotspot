@@ -1,5 +1,6 @@
 # Ambiente
 backend/.env
+backend/.env.dev
 backend/certificados/*.pem
 backend/certificados/*.p12
 backend/tokens/
