@@ -445,112 +445,136 @@ export default function Vouchers() {
             .print-only { display: none !important; }
           }
           @media print {
-            /* Ocultar elementos estruturais do painel admin */
-            aside, header, footer, button, select, input, .screen-only {
-              display: none !important;
+            /* Ocultar todo o corpo da página */
+            body {
+              visibility: hidden !important;
+              background: white !important;
             }
             
-            /* Resetar backgrounds e espaçamentos dos containers pai */
-            html, body, #root, div, main {
-              background: white !important;
+            /* Tornar visível e forçar cores pretas apenas no print-area e seus filhos */
+            #print-area, #print-area * {
+              visibility: visible !important;
               color: black !important;
-              font-family: sans-serif;
+              background: transparent !important;
+            }
+            
+            /* Posicionar de forma absoluta no canto superior esquerdo da folha */
+            #print-area {
+              display: block !important;
+              position: absolute !important;
+              left: 0 !important;
+              top: 0 !important;
+              width: 210mm !important;
               margin: 0 !important;
               padding: 0 !important;
-              width: 100% !important;
-              box-shadow: none !important;
-              overflow: visible !important;
+              background: white !important;
             }
             
-            .print-only {
-              display: block !important;
-            }
             .page-break {
               page-break-after: always;
             }
+            
+            /* Usar Grid CSS para alinhar perfeitamente 3x8 por folha A4 */
             .vouchers-grid {
-              width: 190mm; /* A4 largura útil com margens */
-              margin: 0 auto;
-              padding-top: 10mm;
+              display: grid !important;
+              grid-template-columns: repeat(3, 60mm) !important;
+              gap: 3mm !important;
+              width: 190mm !important;
+              margin: 0 auto !important;
+              padding-top: 10mm !important;
+              justify-content: center !important;
             }
+            
             .voucher-ticket {
-              width: 60mm;
-              height: 32mm;
-              border: 1px dashed #666;
-              float: left;
-              margin: 1.5mm 1mm;
-              padding: 2.5mm;
-              box-sizing: border-box;
-              background: white;
-              color: black;
-              page-break-inside: avoid;
-              position: relative;
+              width: 60mm !important;
+              height: 32mm !important;
+              border: 1px dashed #666 !important;
+              padding: 2.5mm !important;
+              box-sizing: border-box !important;
+              background: white !important;
+              color: black !important;
+              page-break-inside: avoid !important;
+              position: relative !important;
+              display: block !important;
             }
+            
             .voucher-title {
-              font-size: 7.5pt;
-              font-weight: bold;
-              text-transform: uppercase;
-              border-bottom: 1px solid #ddd;
-              padding-bottom: 0.5mm;
-              margin-bottom: 1mm;
-              color: #111;
+              font-size: 7.5pt !important;
+              font-weight: bold !important;
+              text-transform: uppercase !important;
+              border-bottom: 1px solid #ddd !important;
+              padding-bottom: 0.5mm !important;
+              margin-bottom: 1mm !important;
+              color: #111 !important;
             }
+            
             .voucher-body {
-              display: flex;
-              justify-content: space-between;
-              height: 20mm;
+              display: flex !important;
+              justify-content: space-between !important;
+              height: 20mm !important;
             }
+            
             .voucher-info {
-              width: 38mm;
-              display: flex;
-              flex-direction: column;
-              justify-content: space-between;
+              width: 38mm !important;
+              display: flex !important;
+              flex-direction: column !important;
+              justify-content: space-between !important;
             }
+            
             .voucher-plano {
-              font-size: 8pt;
-              font-weight: bold;
-              color: #333;
+              font-size: 8pt !important;
+              font-weight: bold !important;
+              color: #222 !important;
             }
+            
             .voucher-codigo-box {
-              background: #f0f0f0;
-              padding: 1mm 2mm;
-              border-radius: 4px;
-              text-align: center;
-              margin: 0.5mm 0;
+              background: #f0f0f0 !important;
+              padding: 1mm 2mm !important;
+              border-radius: 4px !important;
+              text-align: center !important;
+              margin: 0.5mm 0 !important;
             }
+            
             .voucher-codigo {
-              font-family: monospace;
-              font-size: 11pt;
-              font-weight: bold;
-              letter-spacing: 1px;
+              font-family: monospace !important;
+              font-size: 11pt !important;
+              font-weight: bold !important;
+              letter-spacing: 1px !important;
+              color: black !important;
             }
+            
             .voucher-specs {
-              font-size: 6.5pt;
-              color: #555;
+              font-size: 6.5pt !important;
+              color: #333 !important;
             }
+            
             .voucher-instrucoes {
-              font-size: 5.5pt;
-              line-height: 1.2;
-              color: #777;
-              margin-top: 0.5mm;
+              font-size: 5.5pt !important;
+              line-height: 1.2 !important;
+              color: #555 !important;
+              margin-top: 0.5mm !important;
             }
+            
             .voucher-qr {
-              width: 16mm;
-              display: flex;
-              flex-direction: column;
-              align-items: center;
-              justify-content: center;
+              width: 16mm !important;
+              display: flex !important;
+              flex-direction: column !important;
+              align-items: center !important;
+              justify-content: center !important;
             }
+            
             .voucher-qr img {
-              width: 15mm;
-              height: 15mm;
+              width: 15mm !important;
+              height: 15mm !important;
+              background: white !important;
             }
+            
             .voucher-qr-txt {
-              font-size: 4.5pt;
-              color: #888;
-              text-transform: uppercase;
-              margin-top: 0.5mm;
-              text-align: center;
+              font-size: 4.5pt !important;
+              color: #666 !important;
+              text-transform: uppercase !important;
+              margin-top: 0.5mm !important;
+              text-align: center !important;
             }
           }
         `}</style>
