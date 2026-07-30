@@ -14,7 +14,7 @@ function gerarCodigoUnico() {
 async function listarVouchers(req, res) {
   try {
     const [rows] = await db.execute(`
-      SELECT v.*, p.nome AS plano_nome, m.nome AS mikrotik_nome
+      SELECT v.*, p.nome AS plano_nome, p.duracao_minutos, p.velocidade_up, p.velocidade_down, p.mikrotik_id, m.nome AS mikrotik_nome
       FROM vouchers v
       JOIN planos p ON p.id = v.plano_id
       LEFT JOIN mikrotiks m ON m.id = p.mikrotik_id

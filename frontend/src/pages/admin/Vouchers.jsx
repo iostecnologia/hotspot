@@ -487,9 +487,9 @@ export default function Vouchers() {
             
             .voucher-ticket {
               width: 60mm !important;
-              height: 32mm !important;
+              height: 34mm !important;
               border: 1px dashed #666 !important;
-              padding: 2.5mm !important;
+              padding: 1.5mm 2.5mm !important;
               box-sizing: border-box !important;
               background: white !important;
               color: black !important;
@@ -511,7 +511,7 @@ export default function Vouchers() {
             .voucher-body {
               display: flex !important;
               justify-content: space-between !important;
-              height: 20mm !important;
+              height: 22mm !important;
             }
             
             .voucher-info {
@@ -602,7 +602,7 @@ export default function Vouchers() {
                         Duração: {v.duracao_minutos} min | Up: {v.velocidade_up}M | Down: {v.velocidade_down}M
                       </div>
                       <div className="voucher-instrucoes">
-                        Conecte no Wi-Fi, clique em 'Entrar com Voucher' e insira o código ou escaneie o QR Code ao lado.
+                        Conecte no Wi-Fi, clique em 'Entrar com Voucher' e digite o código ou escaneie o QR Code.
                       </div>
                     </div>
                     <div className="voucher-qr">
